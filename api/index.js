@@ -1,13 +1,20 @@
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
-const { GraphQLSchema } = require('graphql');
+const { GraphQLSchema, printSchema } = require('graphql');
 const { Query } = require('./types/query')
+const cors = require('cors')
+const initData = require('./data')
 
-const app = express();
+initData()
+const app = express()
+
+app.use(cors())
 
 const schema = new GraphQLSchema({
   query: Query
 })
+
+console.log(printSchema(schema))
 
 app.use(
   '/graphql',
@@ -18,5 +25,5 @@ app.use(
 );
 
 app.listen(4000, () => {
-
+  console.log('started on port 4000')
 })

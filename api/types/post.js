@@ -24,6 +24,10 @@ const Post = new GraphQLObjectType({
       title: {
         type: GraphQLString,
         description: 'The user facing title of the post'
+      },
+      body: {
+        type: GraphQLString,
+        description: 'The user facing body of the post'
       }
     }
   }

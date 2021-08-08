@@ -1,5 +1,6 @@
 import {
   Environment, 
+  FetchFunction, 
   Network, 
   RecordSource, 
   Store
@@ -8,7 +9,7 @@ import fetchGQL from './fetchGQL';
 
 // Relay passes a "params" object with the query name and text. So we define a helper function
 // to call our fetchGQL utility with params.text.
-async function fetchRelay(params, variables) {
+const fetchRelay: FetchFunction = async (params, variables) => {
   console.log(`fetching query ${params.name} with ${JSON.stringify(variables)}`);
   return fetchGQL(params.text, variables);
 }
