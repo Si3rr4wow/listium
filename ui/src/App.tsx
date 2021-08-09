@@ -1,7 +1,7 @@
-import PostHistory from './users/PostHistory';
+import UserProfile from './users/UserProfile';
 
 const App: React.FC = () => (
-  <PostHistory/>
+  <UserProfile/>
 )
 
 export default App;

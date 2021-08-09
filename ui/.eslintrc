@@ -9,5 +9,8 @@
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "ignorePatterns": "scripts"
+  "ignorePatterns": "scripts",
+  "rules": {
+    "no-extra-semi": 2
+  }
 }
