@@ -1,12 +1,14 @@
 const { nodeDefinitions, fromGlobalId } = require('graphql-relay')
-const { getPost, getUser } = require('../resolvers')
+const { getComment, getPost, getUser } = require('../resolvers')
 
 const types = {
+  COMMENT: 'COMMENT',
   POST: 'Post',
   USER: 'User'
 }
 
 const resolvers = {
+  [types.COMMENT]: id => getComment(id),
   [types.POST]: id => getPost(id),
   [types.USER]: id => getUser(id)
 }
@@ -17,10 +19,13 @@ const fetchByGuid = guid => {
 }
 
 const discriminateType = obj => {
+  console.log("🚀 ~ file: node.js ~ line 22 ~ obj", obj)
+  const { Comment } = require('./comment')
   const { Post } = require('./post')
   const { User } = require('./user')
-  if (obj.title && obj.userId) { return Post }
-  if (obj.username && obj.posts) { return User }
+  if (obj.title && obj.body && obj.userId) { return Post }
+  if (obj.body && obj.userId) { return Comment }
+  if (obj.username) { return User }
 }
 
 const { 
