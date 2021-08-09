@@ -1,13 +1,19 @@
 const { GraphQLObjectType, GraphQLString } = require("graphql");
-const { globalIdField, connectionDefinitions } = require("graphql-relay");
+const { 
+  globalIdField,
+  connectionDefinitions,
+  connectionFromArray,
+  connectionArgs
+} = require("graphql-relay");
 const { nodeInterface } = require("./node");
-const { getUser } = require('../resolvers')
+const { getUser, getPostComments } = require('../resolvers')
 
 const Post = new GraphQLObjectType({
   name: 'Post', 
   interfaces: [nodeInterface],
   fields: () => {
     const { User } = require('./user')
+    const { commentConnection } = require('./comment')
     return {
       id: globalIdField('Post'),
       createdAt: {
@@ -16,9 +22,19 @@ const Post = new GraphQLObjectType({
       },
       user: {
         type: User,
+        description: 'The user who wrote this post',
         resolve: async ({ userId }) => {
           const user = await getUser(userId)
           return user
+        }
+      },
+      comments: {
+        type: commentConnection,
+        description: "This post's comments",
+        args: connectionArgs,
+        resolve: async (post, args) => {
+          const postComments = await getPostComments(post.id)
+          return connectionFromArray([...postComments], args)
         }
       },
       title: {

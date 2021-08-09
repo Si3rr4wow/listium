@@ -1,20 +1,16 @@
-const express = require('express');
-const { graphqlHTTP } = require('express-graphql');
-const { GraphQLSchema, printSchema } = require('graphql');
-const { Query } = require('./types/query')
+const express = require('express')
+const { graphqlHTTP } = require('express-graphql')
 const cors = require('cors')
 const initData = require('./data')
+const schema = require('./graph/schema')
+const makeSchemaFile = require('./graph/makeSchemaFile')
 
 initData()
+makeSchemaFile()
+
 const app = express()
 
 app.use(cors())
-
-const schema = new GraphQLSchema({
-  query: Query
-})
-
-console.log(printSchema(schema))
 
 app.use(
   '/graphql',
@@ -23,6 +19,11 @@ app.use(
     graphiql: true,
   }),
 );
+
+app.get('/schema', (_, res) => {
+  res.setHeader('Content-Type', 'text/plain')
+  res.sendFile(`${__dirname}/graph/schema.graphql`)
+})
 
 app.listen(4000, () => {
   console.log('started on port 4000')

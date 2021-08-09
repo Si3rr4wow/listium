@@ -1,4 +1,8 @@
-async function fetchGraphQL(text: string | null | undefined, variables: any) {
+async function fetchGraphQL(
+  text: string | null | undefined, 
+  variables: Record<string, string | number>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> {
   // Fetch data from GitHub's GraphQL API:
   const response = await fetch('http://localhost:4000/graphql', {
     method: 'POST',

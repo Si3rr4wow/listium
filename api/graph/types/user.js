@@ -20,7 +20,7 @@ const User = new GraphQLObjectType({
       },
       posts: {
         type: postConnection,
-        description: "This users posts",
+        description: "This user's posts",
         args: connectionArgs,
         resolve: async (user, args) => {
           const userPosts = await getUserPosts(user.id)

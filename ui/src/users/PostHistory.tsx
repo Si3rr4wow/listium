@@ -1,15 +1,15 @@
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
 import { graphql } from 'babel-plugin-relay/macro';
 import {
   loadQuery,
   usePreloadedQuery,
   PreloadedQuery,
-  useQueryLoader
 } from 'react-relay/hooks';
 import relayEnvironment from '../relayEnvironment';
-import { Container, Spinner, Heading, Text, Button } from "@chakra-ui/react"
-import { Card, FullPage } from '../components';
-import dayjs from 'dayjs';
+import { Container, Spinner, Heading, Center } from "@chakra-ui/react"
+import { FullPage } from '../components';
+import { User } from '../dataTypes';
+import PostCard from '../components/PostCard';
 
 const userPostHistory = graphql`
   query PostHistoryQuery($id: ID!, $postCount: Int!) {
@@ -27,6 +27,16 @@ const userPostHistory = graphql`
               id
               username
             }
+            comments {
+              totalCount
+              edges {
+                node {
+                  user {
+                    username
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -34,31 +44,13 @@ const userPostHistory = graphql`
   }
 `
 
-type Nullable<TNullable> = TNullable | null
-
 interface UserPostHistoryOperation {
   variables: {
     id: string;
     postCount: number;
   };
   response: {
-    user: {
-      id: Nullable<string>;
-      username: Nullable<string>;
-      posts: {
-        edges: {
-          node: {
-            id: Nullable<string>;
-            title: Nullable<string>;
-            createdAt: Nullable<string>;
-            body: Nullable<string>;
-            user: {
-              username: string;
-            }
-          };
-        }[];
-      }
-    };
+    user: User;
   };
 }
 
@@ -79,47 +71,16 @@ const PostHistory: React.FC<{ preloadedQuery: PreloadedQuery<UserPostHistoryOper
       <Heading as="h1" pt="4">{data.user.username}</Heading>
       <Heading as="h2" pt="2" size="md" color="pink.500">Post History</Heading>
       {
-        data.user.posts.edges.map(({ 
-          node: { 
-            title, 
-            body, 
-            createdAt, 
-            user: { 
-              username 
-            } 
-          } 
-        }) => {
-          return (
-            <Card>
-              <Heading as="h3" size="sm">
-                {title}
-              </Heading>
-              <Card 
-                overflow="hidden" 
-                maxHeight="100px" 
-                position="relative" 
-                style={{ webkitMaskImage: 'linear-gradient(180deg, #000 60%,transparent)' }}
-              >
-                <Text>
-                  {body}
-                </Text>
-              </Card>
-              <Text color="gray.300" fontSize="xs">
-                {username}
-              </Text>
-              <Text color="gray.300" fontSize="xs">
-                {dayjs(createdAt).calendar()}
-              </Text>
-            </Card>
-          )
-        })
+        data.user.posts.edges.map(({ node }) => <PostCard node={node}/>)
       }
     </>
   );
 }
 
 const Loading = () => (
-  <Spinner/>
+  <Center height="100vh">
+    <Spinner />
+  </Center>
 )
 
 const AppRoot: React.FC = () => (

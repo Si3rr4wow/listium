@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import calendar from 'dayjs/plugin/calendar'
 
-const startUp = () => {
+const startUp = (): void => {
   dayjs.extend(calendar)
 
   dayjs().calendar(dayjs('2008-01-01'))

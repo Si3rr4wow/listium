@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/layout"
 import { ChakraProps } from "@chakra-ui/react"
 
-export const Card: React.FC<ChakraProps & { style?: any }> = ({ children, ...props }) => {
+export const Card: React.FC<ChakraProps & { style?: Record<string, string> }> = ({ children, ...props }) => {
   return (
     <Box 
       mt={4} 

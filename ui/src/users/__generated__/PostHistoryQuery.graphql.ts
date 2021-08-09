@@ -23,6 +23,16 @@ export type PostHistoryQueryResponse = {
                         readonly id: string;
                         readonly username: string | null;
                     } | null;
+                    readonly comments: {
+                        readonly totalCount: number | null;
+                        readonly edges: ReadonlyArray<{
+                            readonly node: {
+                                readonly user: {
+                                    readonly username: string | null;
+                                } | null;
+                            } | null;
+                        } | null> | null;
+                    } | null;
                 } | null;
             } | null> | null;
         } | null;
@@ -54,6 +64,18 @@ query PostHistoryQuery(
             id
             username
           }
+          comments {
+            totalCount
+            edges {
+              node {
+                user {
+                  username
+                  id
+                }
+                id
+              }
+            }
+          }
         }
       }
     }
@@ -74,99 +96,167 @@ var v0 = [
     "name": "postCount"
   }
 ],
-v1 = {
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "id"
+  }
+],
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v2 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "username",
   "storageKey": null
 },
-v3 = [
+v4 = [
   {
-    "alias": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "id",
-        "variableName": "id"
-      }
-    ],
-    "concreteType": "User",
-    "kind": "LinkedField",
-    "name": "user",
-    "plural": false,
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "postCount"
+  }
+],
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "createdAt",
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "body",
+  "storageKey": null
+},
+v8 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "User",
+  "kind": "LinkedField",
+  "name": "user",
+  "plural": false,
+  "selections": [
+    (v2/*: any*/),
+    (v3/*: any*/)
+  ],
+  "storageKey": null
+},
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "totalCount",
+  "storageKey": null
+};
+return {
+  "fragment": {
+    "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "PostHistoryQuery",
     "selections": [
-      (v1/*: any*/),
-      (v2/*: any*/),
       {
         "alias": null,
-        "args": [
-          {
-            "kind": "Variable",
-            "name": "first",
-            "variableName": "postCount"
-          }
-        ],
-        "concreteType": "PostConnection",
+        "args": (v1/*: any*/),
+        "concreteType": "User",
         "kind": "LinkedField",
-        "name": "posts",
+        "name": "user",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "alias": null,
-            "args": null,
-            "concreteType": "PostEdge",
+            "args": (v4/*: any*/),
+            "concreteType": "PostConnection",
             "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
+            "name": "posts",
+            "plural": false,
             "selections": [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Post",
+                "concreteType": "PostEdge",
                 "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
+                "name": "edges",
+                "plural": true,
                 "selections": [
-                  (v1/*: any*/),
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "title",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "createdAt",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "body",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "User",
+                    "concreteType": "Post",
                     "kind": "LinkedField",
-                    "name": "user",
+                    "name": "node",
                     "plural": false,
                     "selections": [
-                      (v1/*: any*/),
-                      (v2/*: any*/)
+                      (v2/*: any*/),
+                      (v5/*: any*/),
+                      (v6/*: any*/),
+                      (v7/*: any*/),
+                      (v8/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "CommentConnection",
+                        "kind": "LinkedField",
+                        "name": "comments",
+                        "plural": false,
+                        "selections": [
+                          (v9/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "CommentEdge",
+                            "kind": "LinkedField",
+                            "name": "edges",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "Comment",
+                                "kind": "LinkedField",
+                                "name": "node",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "User",
+                                    "kind": "LinkedField",
+                                    "name": "user",
+                                    "plural": false,
+                                    "selections": [
+                                      (v3/*: any*/)
+                                    ],
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
                     ],
                     "storageKey": null
                   }
@@ -180,16 +270,6 @@ v3 = [
         "storageKey": null
       }
     ],
-    "storageKey": null
-  }
-];
-return {
-  "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
-    "kind": "Fragment",
-    "metadata": null,
-    "name": "PostHistoryQuery",
-    "selections": (v3/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
@@ -198,17 +278,117 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "PostHistoryQuery",
-    "selections": (v3/*: any*/)
+    "selections": [
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "User",
+        "kind": "LinkedField",
+        "name": "user",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
+          {
+            "alias": null,
+            "args": (v4/*: any*/),
+            "concreteType": "PostConnection",
+            "kind": "LinkedField",
+            "name": "posts",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "PostEdge",
+                "kind": "LinkedField",
+                "name": "edges",
+                "plural": true,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Post",
+                    "kind": "LinkedField",
+                    "name": "node",
+                    "plural": false,
+                    "selections": [
+                      (v2/*: any*/),
+                      (v5/*: any*/),
+                      (v6/*: any*/),
+                      (v7/*: any*/),
+                      (v8/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "CommentConnection",
+                        "kind": "LinkedField",
+                        "name": "comments",
+                        "plural": false,
+                        "selections": [
+                          (v9/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "CommentEdge",
+                            "kind": "LinkedField",
+                            "name": "edges",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "Comment",
+                                "kind": "LinkedField",
+                                "name": "node",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "User",
+                                    "kind": "LinkedField",
+                                    "name": "user",
+                                    "plural": false,
+                                    "selections": [
+                                      (v3/*: any*/),
+                                      (v2/*: any*/)
+                                    ],
+                                    "storageKey": null
+                                  },
+                                  (v2/*: any*/)
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      }
+    ]
   },
   "params": {
-    "cacheID": "bb7b9a79cb171f70c1ee4e4d70f6ea67",
+    "cacheID": "567c85a5e14d62b487e717daec87fea7",
     "id": null,
     "metadata": {},
     "name": "PostHistoryQuery",
     "operationKind": "query",
-    "text": "query PostHistoryQuery(\n  $id: ID!\n  $postCount: Int!\n) {\n  user(id: $id) {\n    id\n    username\n    posts(first: $postCount) {\n      edges {\n        node {\n          id\n          title\n          createdAt\n          body\n          user {\n            id\n            username\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query PostHistoryQuery(\n  $id: ID!\n  $postCount: Int!\n) {\n  user(id: $id) {\n    id\n    username\n    posts(first: $postCount) {\n      edges {\n        node {\n          id\n          title\n          createdAt\n          body\n          user {\n            id\n            username\n          }\n          comments {\n            totalCount\n            edges {\n              node {\n                user {\n                  username\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '0e1addcc66cd40313eed3218aed4e3f3';
+(node as any).hash = 'baefdd74f4be79a67669c12bc485c64c';
 export default node;

@@ -14,4 +14,8 @@ exports.getUsers = () => get(`http://localhost:4001/users`)
 exports.getPost = id => get(`http://localhost:4001/posts/${id}`)
 exports.getPosts = () => get(`http://localhost:4001/posts`)
 
+exports.getComment = id => get(`http://localhost:4001/comments/${id}`)
+exports.getComments = () => get(`http://localhost:4001/comments`)
+
 exports.getUserPosts = id => get(`http://localhost:4001/users/${id}/posts`)
+exports.getPostComments = id => get(`http://localhost:4001/posts/${id}/comments`)
