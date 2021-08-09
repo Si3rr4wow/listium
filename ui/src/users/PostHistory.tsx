@@ -1,38 +1,57 @@
+
+
 import { graphql } from 'babel-plugin-relay/macro'
 import { usePaginationFragment } from 'react-relay/hooks'
 import PostCard from '../components/PostCard'
-import type { PostHistoryPaginationQuery } from './__generated__/PostHistoryPaginationQuery.graphql'
 import type { PostHistoryComponent_user$key } from './__generated__/PostHistoryComponent_user.graphql'
-
-const postHistoryFragment = graphql`
-  fragment PostHistoryComponent_user on User
-  @refetchable(queryName: "PostHistoryPaginationQuery") {
-    posts(first: $count, after: $cursor)
-    @connection(key: "PostHistory_user_posts") {
-      edges {
-        node {
-          title
-          body
-          comments {
-            totalCount
-          }
-        }
-      }
-    }
-  }
-`
 
 const PostHistory: React.FC<{ 
   user: PostHistoryComponent_user$key 
 }> = ({ user }) => {
-  const data = usePaginationFragment<PostHistoryPaginationQuery, PostHistoryComponent_user$key>(
-    postHistoryFragment,
-    user,
+  const {
+    data,
+    loadNext,
+    hasNext,
+  } = usePaginationFragment(
+    graphql`
+      fragment PostHistoryComponent_user on User
+      @argumentDefinitions(
+        first: { type: Int, defaultValue: 5 }
+        after: { type: String, defaultValue: "" }
+      )
+      @refetchable(queryName: "PostHistoryPaginationQuery") {
+        posts(first: $first, after: $after)
+        @connection(key: "PostHistory_user_posts") {
+          edges {
+            node {
+              id
+              ...PostCard_post
+            }
+          }
+        }
+      }
+    `, 
+    user
   )
 
-  console.log(data)
-  
-  return data.posts.edges.map(({ node }) => <PostCard node={node}/>)
+  return (
+    <div>
+      {
+        data.posts?.edges?.map(
+          edge => edge?.node && <PostCard node={edge.node}/>
+        )
+      }
+      {
+        hasNext ?
+          <button 
+            onClick={() =>{ loadNext(4, { onComplete: (err) => { console.log(err) } }) }}
+          >
+            load moar
+          </button> : 'no moar posties :('
+
+      }
+    </div>
+  )
 }
 
 export default PostHistory;

@@ -9,11 +9,8 @@ export type PostHistoryComponent_user = {
     readonly posts: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly title: string | null;
-                readonly body: string | null;
-                readonly comments: {
-                    readonly totalCount: number | null;
-                } | null;
+                readonly id: string;
+                readonly " $fragmentRefs": FragmentRefs<"PostCard_post">;
             } | null;
         } | null> | null;
     } | null;
@@ -31,24 +28,33 @@ export type PostHistoryComponent_user$key = {
 const node: ReaderFragment = (function(){
 var v0 = [
   "posts"
-];
+],
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
 return {
   "argumentDefinitions": [
     {
-      "kind": "RootArgument",
-      "name": "count"
+      "defaultValue": "",
+      "kind": "LocalArgument",
+      "name": "after"
     },
     {
-      "kind": "RootArgument",
-      "name": "cursor"
+      "defaultValue": 5,
+      "kind": "LocalArgument",
+      "name": "first"
     }
   ],
   "kind": "Fragment",
   "metadata": {
     "connection": [
       {
-        "count": "count",
-        "cursor": "cursor",
+        "count": "first",
+        "cursor": "after",
         "direction": "forward",
         "path": (v0/*: any*/)
       }
@@ -56,8 +62,8 @@ return {
     "refetch": {
       "connection": {
         "forward": {
-          "count": "count",
-          "cursor": "cursor"
+          "count": "first",
+          "cursor": "after"
         },
         "backward": null,
         "path": (v0/*: any*/)
@@ -95,44 +101,18 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "title",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "body",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "CommentConnection",
-                  "kind": "LinkedField",
-                  "name": "comments",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "totalCount",
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
-                },
+                (v1/*: any*/),
                 {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
+                },
+                {
+                  "args": null,
+                  "kind": "FragmentSpread",
+                  "name": "PostCard_post"
                 }
               ],
               "storageKey": null
@@ -175,17 +155,11 @@ return {
       ],
       "storageKey": null
     },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
-    }
+    (v1/*: any*/)
   ],
   "type": "User",
   "abstractKey": null
 };
 })();
-(node as any).hash = '7367f64c966a4f7ca119426a61eaf94f';
+(node as any).hash = 'f04e0a4c1d71a1120733a4de2059a7c7';
 export default node;

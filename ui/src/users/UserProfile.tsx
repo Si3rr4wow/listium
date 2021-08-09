@@ -32,7 +32,7 @@ const UserProfile: React.FC<{
 }> = ({ 
   preloadedQuery: propPreloadedQuery 
 }) => {
-  const data = usePreloadedQuery<UserProfileQuery>(
+  const data = usePreloadedQuery(
     userProfile,
     propPreloadedQuery,
   )

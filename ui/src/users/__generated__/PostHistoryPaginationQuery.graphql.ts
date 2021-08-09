@@ -6,8 +6,8 @@ import { ConcreteRequest } from "relay-runtime";
 
 import { FragmentRefs } from "relay-runtime";
 export type PostHistoryPaginationQueryVariables = {
-    count?: number | null;
-    cursor?: string | null;
+    after?: string | null;
+    first?: number | null;
     id: string;
 };
 export type PostHistoryPaginationQueryResponse = {
@@ -24,27 +24,36 @@ export type PostHistoryPaginationQuery = {
 
 /*
 query PostHistoryPaginationQuery(
-  $count: Int
-  $cursor: String
+  $after: String = ""
+  $first: Int = 5
   $id: ID!
 ) {
   node(id: $id) {
     __typename
-    ...PostHistoryComponent_user
+    ...PostHistoryComponent_user_2HEEH6
     id
   }
 }
 
-fragment PostHistoryComponent_user on User {
-  posts(first: $count, after: $cursor) {
+fragment PostCard_post on Post {
+  title
+  body
+  createdAt
+  comments {
+    totalCount
+  }
+  user {
+    id
+    username
+  }
+}
+
+fragment PostHistoryComponent_user_2HEEH6 on User {
+  posts(first: $first, after: $after) {
     edges {
       node {
-        title
-        body
-        comments {
-          totalCount
-        }
         id
+        ...PostCard_post
         __typename
       }
       cursor
@@ -61,14 +70,14 @@ fragment PostHistoryComponent_user on User {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "defaultValue": null,
+    "defaultValue": "",
     "kind": "LocalArgument",
-    "name": "count"
+    "name": "after"
   },
   {
-    "defaultValue": null,
+    "defaultValue": 5,
     "kind": "LocalArgument",
-    "name": "cursor"
+    "name": "first"
   },
   {
     "defaultValue": null,
@@ -83,32 +92,32 @@ v1 = [
     "variableName": "id"
   }
 ],
-v2 = {
+v2 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "after"
+  },
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "first"
+  }
+],
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
 },
-v3 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-},
-v4 = [
-  {
-    "kind": "Variable",
-    "name": "after",
-    "variableName": "cursor"
-  },
-  {
-    "kind": "Variable",
-    "name": "first",
-    "variableName": "count"
-  }
-];
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -125,7 +134,7 @@ return {
         "plural": false,
         "selections": [
           {
-            "args": null,
+            "args": (v2/*: any*/),
             "kind": "FragmentSpread",
             "name": "PostHistoryComponent_user"
           }
@@ -150,14 +159,14 @@ return {
         "name": "node",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
           (v3/*: any*/),
+          (v4/*: any*/),
           {
             "kind": "InlineFragment",
             "selections": [
               {
                 "alias": null,
-                "args": (v4/*: any*/),
+                "args": (v2/*: any*/),
                 "concreteType": "PostConnection",
                 "kind": "LinkedField",
                 "name": "posts",
@@ -179,6 +188,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
+                          (v4/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -191,6 +201,13 @@ return {
                             "args": null,
                             "kind": "ScalarField",
                             "name": "body",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "createdAt",
                             "storageKey": null
                           },
                           {
@@ -211,8 +228,26 @@ return {
                             ],
                             "storageKey": null
                           },
-                          (v3/*: any*/),
-                          (v2/*: any*/)
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "User",
+                            "kind": "LinkedField",
+                            "name": "user",
+                            "plural": false,
+                            "selections": [
+                              (v4/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "username",
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
+                          (v3/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -256,7 +291,7 @@ return {
               },
               {
                 "alias": null,
-                "args": (v4/*: any*/),
+                "args": (v2/*: any*/),
                 "filters": null,
                 "handle": "connection",
                 "key": "PostHistory_user_posts",
@@ -273,14 +308,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "8eb7fa0ce23063e09a4369c6610d2aa7",
+    "cacheID": "72c76bee116ad47e19942ef8065011e3",
     "id": null,
     "metadata": {},
     "name": "PostHistoryPaginationQuery",
     "operationKind": "query",
-    "text": "query PostHistoryPaginationQuery(\n  $count: Int\n  $cursor: String\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...PostHistoryComponent_user\n    id\n  }\n}\n\nfragment PostHistoryComponent_user on User {\n  posts(first: $count, after: $cursor) {\n    edges {\n      node {\n        title\n        body\n        comments {\n          totalCount\n        }\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n}\n"
+    "text": "query PostHistoryPaginationQuery(\n  $after: String = \"\"\n  $first: Int = 5\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...PostHistoryComponent_user_2HEEH6\n    id\n  }\n}\n\nfragment PostCard_post on Post {\n  title\n  body\n  createdAt\n  comments {\n    totalCount\n  }\n  user {\n    id\n    username\n  }\n}\n\nfragment PostHistoryComponent_user_2HEEH6 on User {\n  posts(first: $first, after: $after) {\n    edges {\n      node {\n        id\n        ...PostCard_post\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n}\n"
   }
 };
 })();
-(node as any).hash = '7367f64c966a4f7ca119426a61eaf94f';
+(node as any).hash = 'f04e0a4c1d71a1120733a4de2059a7c7';
 export default node;
