@@ -23,8 +23,9 @@ const fetchByGuid = guid => {
 const discriminateType = obj => {
   const { Comment } = require('./comment')
   const { Post } = require('./post')
-  const { ProfilePicture } = require('./profilePicture')
+  const { ProfilePicture } = require('./image')
   const { User } = require('./user')
+  console.log(obj)
   if (obj.body && obj.userId) { return Comment }
   if (obj.title && obj.body && obj.userId) { return Post }
   if (obj.tiny && obj.small && obj.medium && obj.large) { return ProfilePicture }
