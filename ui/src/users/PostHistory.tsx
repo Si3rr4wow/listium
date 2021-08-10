@@ -44,7 +44,7 @@ const PostHistory: React.FC<{
       {
         hasNext ?
           <button 
-            onClick={() =>{ loadNext(4, { onComplete: (err) => { console.log(err) } }) }}
+            onClick={() =>{ loadNext(4) }}
           >
             load moar
           </button> : 'no moar posties :('

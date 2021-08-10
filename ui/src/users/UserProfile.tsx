@@ -23,8 +23,6 @@ const userProfile = graphql`
   }
 `
 
-console.log(window.location.pathname)
-
 const preloadedQuery = loadQuery<UserProfileQuery>(
   relayEnvironment, 
   userProfile,
