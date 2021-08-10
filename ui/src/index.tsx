@@ -1,20 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import App from './App'
+import Routes from './Routes'
 import reportWebVitals from './reportWebVitals'
 import { ChakraProvider } from "@chakra-ui/react"
 import { RelayEnvironmentProvider } from 'react-relay'
 import relayEnvironment from './relayEnvironment'
-import startUp from './startUp'
-
-startUp()
+import './dayjsPlugins'
 
 ReactDOM.render(
   <React.StrictMode>
     <RelayEnvironmentProvider environment={relayEnvironment}>
       <ChakraProvider>
-        <App/>
+        <Routes/>
       </ChakraProvider>
     </RelayEnvironmentProvider>
   </React.StrictMode>,

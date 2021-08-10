@@ -7,11 +7,14 @@ import {
 } from 'relay-runtime';
 import fetchGQL from './fetchGQL';
 
-// Relay passes a "params" object with the query name and text. So we define a helper function
-// to call our fetchGQL utility with params.text.
-const fetchRelay: FetchFunction = async (params, variables) => {
-  console.log(`fetching query ${params.name} with ${JSON.stringify(variables)}`);
-  return fetchGQL(params.text, variables);
+export interface RelayParams {
+  name: string | null | undefined;
+  text: string | null | undefined;
+}
+
+const fetchRelay: FetchFunction = async (relayParams: RelayParams, variables) => {
+  console.log(`fetching query ${relayParams.name} with ${JSON.stringify(variables)}`);
+  return fetchGQL(relayParams, variables);
 }
 
 // Export a singleton instance of Relay Environment configured with our network function:

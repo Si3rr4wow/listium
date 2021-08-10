@@ -1,7 +1,7 @@
 const randomWords = require('random-words')
 
 exports.randomDate = () => {
-  const start = new Date(new Date() - 99999999999)
+  const start = new Date(new Date() - 999999999)
   const end = new Date()
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 }
