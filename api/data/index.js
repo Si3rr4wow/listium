@@ -1,11 +1,13 @@
 const comments = require('./comments')
 const posts = require('./posts')
+const profilePictures = require('./profilePictures')
 const users = require('./users')
 const fs = require('fs')
 
 const data = JSON.stringify({
   comments,
   posts,
+  profilePictures,
   users
 })
 

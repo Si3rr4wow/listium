@@ -20,6 +20,7 @@ type User implements Node {
   """The ID of an object"""
   id: ID!
   username: String
+  profilePicture: Image
 
   """This user's posts"""
   posts(
@@ -41,6 +42,15 @@ type User implements Node {
 interface Node {
   """The id of the object."""
   id: ID!
+}
+
+type Image implements Node {
+  """The ID of an object"""
+  id: ID!
+  tiny: String
+  small: String
+  medium: String
+  large: String
 }
 
 """A connection to a list of items."""

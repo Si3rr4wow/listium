@@ -38,7 +38,7 @@ const PostHistory: React.FC<{
     <div>
       {
         data.posts?.edges?.map(
-          edge => edge?.node && <PostCard node={edge.node}/>
+          edge => edge?.node && <PostCard key={edge.node.id} node={edge.node}/>
         )
       }
       {
