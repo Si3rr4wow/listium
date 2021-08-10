@@ -12,6 +12,15 @@ const app = express()
 
 app.use(cors())
 
+app.use(function (req, res, next) {
+  let originalSend = res.send;
+  res.send = function (data) {
+      console.log(data);
+      originalSend.apply(res, Array.from(arguments));
+  }
+  next();
+})
+
 app.use(
   '/graphql',
   graphqlHTTP({
