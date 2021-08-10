@@ -6,17 +6,28 @@ const {
   connectionArgs
 } = require("graphql-relay");
 const { nodeInterface } = require("./node");
-const { getUserPosts } = require('../resolvers')
+const { 
+  getUserPosts,
+  getUserProfilePictures
+} = require('../resolvers')
 
 const User = new GraphQLObjectType({
   name: 'User', 
   interfaces: [nodeInterface],
   fields: () => {
+    const { Image } = require('./image')
     const { postConnection } = require('./post')
     return {
       id: globalIdField('User'),
       username: {
         type: GraphQLString,
+      },
+      profilePicture: {
+        type: Image,
+        resolve: async (user) => {
+          const [profilePicture] = await getUserProfilePictures(user.id)
+          return profilePicture
+        }
       },
       posts: {
         type: postConnection,

@@ -42,7 +42,7 @@ const PostCard: React.FC<{
         overflow="hidden" 
         maxHeight="100px" 
         position="relative" 
-        style={{ webkitMaskImage: 'linear-gradient(180deg, #000 60%,transparent)' }}
+        style={{ WebkitMaskImage: 'linear-gradient(180deg, #000 60%,transparent)' }}
       >
         <Text>
           {data.body}
