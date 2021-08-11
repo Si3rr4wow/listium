@@ -4,9 +4,9 @@ import { useFragment } from 'react-relay'
 import { ProfilePictureSmallComponent_user$key } from './__generated__/ProfilePictureSmallComponent_user.graphql'
 
 const ProfilePictureSmall: React.FC<{ 
-  user: ProfilePictureSmallComponent_user$key 
+  node: ProfilePictureSmallComponent_user$key 
 }> = ({
-  user
+  node
 }) => {
   const data = useFragment(
     graphql`
@@ -17,7 +17,7 @@ const ProfilePictureSmall: React.FC<{
         }
       }
     `,
-    user
+    node
   )
 
   return (

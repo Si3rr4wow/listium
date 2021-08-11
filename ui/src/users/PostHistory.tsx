@@ -6,8 +6,8 @@ import PostCard from '../components/PostCard'
 import type { PostHistoryComponent_user$key } from './__generated__/PostHistoryComponent_user.graphql'
 
 const PostHistory: React.FC<{ 
-  user: PostHistoryComponent_user$key 
-}> = ({ user }) => {
+  node: PostHistoryComponent_user$key 
+}> = ({ node }) => {
   const {
     data,
     loadNext,
@@ -31,7 +31,7 @@ const PostHistory: React.FC<{
         }
       }
     `, 
-    user
+    node
   )
 
   return (
