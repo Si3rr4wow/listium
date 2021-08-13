@@ -1,19 +1,19 @@
 import { Image } from '@chakra-ui/react'
 import { graphql } from 'babel-plugin-relay/macro'
 import { useFragment } from 'react-relay'
-import { ProfilePictureSmallComponent_user$key } from './__generated__/ProfilePictureSmallComponent_user.graphql'
+import { ProfilePictureLargeComponent_user$key } from './__generated__/ProfilePictureLargeComponent_user.graphql'
 
-const ProfilePictureSmall: React.FC<{ 
-  user: ProfilePictureSmallComponent_user$key 
+const ProfilePictureLarge: React.FC<{ 
+  user: ProfilePictureLargeComponent_user$key 
 }> = ({
   user
 }) => {
   const data = useFragment(
     graphql`
-      fragment ProfilePictureSmallComponent_user on User {
+      fragment ProfilePictureLargeComponent_user on User {
         username
         profilePicture {
-          small
+          large
         }
       }
     `,
@@ -25,11 +25,11 @@ const ProfilePictureSmall: React.FC<{
       borderRadius="full"
       border="2px"
       borderColor="pink.500"
-      boxSize="32px"
-      src={data?.profilePicture?.small || ''}
+      boxSize="128px"
+      src={data?.profilePicture?.large || ''}
       alt={`${data?.username} profile picture`}
     />
   )
 }
 
-export default ProfilePictureSmall
+export default ProfilePictureLarge

@@ -8,6 +8,7 @@ export const FullPage: React.FC = ({ children }) => {
       bgGradient="linear(to-b, gray.900 35%, gray.700 100%)"
       color="white"
       overflowY="scroll"
+      py="12"
     >
       {children}
     </Box>

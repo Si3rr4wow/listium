@@ -1,5 +1,6 @@
 
 
+import { Button, Text, Center } from '@chakra-ui/react'
 import { graphql } from 'babel-plugin-relay/macro'
 import { usePaginationFragment } from 'react-relay/hooks'
 import PostCard from '../components/PostCard'
@@ -41,15 +42,18 @@ const PostHistory: React.FC<{
           edge => edge?.node && <PostCard key={edge.node.id} node={edge.node}/>
         )
       }
-      {
-        hasNext ?
-          <button 
-            onClick={() =>{ loadNext(4) }}
-          >
-            load moar
-          </button> : 'no moar posties :('
+      <Center mt="4">
+        {
+          hasNext ?
+            <Button
+              onClick={() =>{ loadNext(4) }}
+              background="gray.500"
+            >
+              See more posts
+            </Button> : <Text>You have reach the end 🥳</Text>
 
-      }
+        }
+      </Center>
     </div>
   )
 }

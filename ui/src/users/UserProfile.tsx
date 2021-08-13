@@ -17,7 +17,7 @@ const userProfile = graphql`
     user(id: $id) {
       id
       username
-      ...ProfilePictureSmallComponent_user
+      ...ProfilePictureLargeComponent_user
       ...PostHistoryComponent_user
     }
   }
