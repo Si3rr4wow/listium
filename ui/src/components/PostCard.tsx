@@ -1,31 +1,35 @@
-import { Heading, Text } from '@chakra-ui/react'
-import dayjs from 'dayjs'
-import { Card } from '.'
-
-import { graphql } from 'babel-plugin-relay/macro'
-import { useFragment } from 'react-relay'
+import { Button, Heading, Text } from '@chakra-ui/react';
+import dayjs from 'dayjs';
+import { Card } from '.';
+import { graphql } from 'babel-plugin-relay/macro';
+import { useFragment } from 'react-relay';
 import type { PostCard_post$key } from './__generated__/PostCard_post.graphql';
+import { useState } from 'react';
+import { Comments } from './Comments';
 
-const PostCard: React.FC<{ 
-  node: PostCard_post$key 
+const PostCard: React.FC<{
+  node: PostCard_post$key;
 }> = ({ node }) => {
   const data = useFragment(
     graphql`
       fragment PostCard_post on Post {
+        id
         title
         body
         createdAt
-        comments {
-          totalCount
-        }
+        ...CommentsComponent_comments
         user {
           id
           username
         }
       }
     `,
-    node,
-  )
+    node
+  );
+
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleIsExpanded = () => setIsExpanded((s) => !s);
 
   return (
     <Card>
@@ -38,66 +42,24 @@ const PostCard: React.FC<{
       <Text color="gray.300" fontSize="xs">
         {dayjs(data.createdAt).calendar()}
       </Text>
-      <Card 
-        overflow="hidden" 
-        maxHeight="100px" 
-        position="relative" 
-        style={{ WebkitMaskImage: 'linear-gradient(180deg, #000 60%,transparent)' }}
+      <Text
+        overflow="hidden"
+        maxHeight={isExpanded ? '' : '100'}
+        position="relative"
+        style={{
+          WebkitMaskImage: isExpanded
+            ? ''
+            : 'linear-gradient(180deg, #000 60%,transparent)',
+        }}
       >
-        <Text>
-          {data.body}
-        </Text>
-      </Card>
-      <Text color="gray.300" fontSize="xs">
-        {data.comments?.totalCount} Comments
+        {data.body}
       </Text>
+      <Button onClick={toggleIsExpanded}>
+        {isExpanded ? 'Contract' : 'Expand'}
+      </Button>
+      <Comments post={data} />
     </Card>
-  )
-}
+  );
+};
 
-export default PostCard
-
-// type Undefinedable<T> = T | null | undefined
-
-// const PostCard: React.FC<{ 
-//   title?: Undefinedable<string>,
-//   body?: Undefinedable<string>,
-//   createdAt?: Undefinedable<string>,
-//   totalComments?: Undefinedable<number>,
-//   username?: Undefinedable<string>
-// }> = ({ 
-//   title,
-//   body,
-//   createdAt,
-//   totalComments,
-//   username 
-// }) => {
-//   return (
-//     <Card>
-//       <Heading as="h3" size="sm">
-//         {title}
-//       </Heading>
-//       <Text color="gray.300" fontSize="xs">
-//         {username}
-//       </Text>
-//       <Text color="gray.300" fontSize="xs">
-//         {dayjs(createdAt).calendar()}
-//       </Text>
-//       <Card 
-//         overflow="hidden" 
-//         maxHeight="100px" 
-//         position="relative" 
-//         style={{ webkitMaskImage: 'linear-gradient(180deg, #000 60%,transparent)' }}
-//       >
-//         <Text>
-//           {body}
-//         </Text>
-//       </Card>
-//       <Text color="gray.300" fontSize="xs">
-//         {totalComments} Comments
-//       </Text>
-//     </Card>
-//   )
-// }
-
-// export default PostCard
+export default PostCard;

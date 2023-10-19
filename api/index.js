@@ -4,7 +4,7 @@ const cors = require('cors');
 const initData = require('./data');
 const schema = require('./graph/schema');
 const makeSchemaFile = require('./graph/makeSchemaFile');
-const { toGlobalId } = require('graphql-relay');
+const { toGlobalId, fromGlobalId } = require('graphql-relay');
 
 initData();
 makeSchemaFile();
@@ -25,6 +25,16 @@ app.use(cors());
 // });
 
 app.use(
+  (_req, _res, next) =>
+    new Promise((resolve) => {
+      setTimeout(() => {
+        next();
+        resolve();
+      }, 1000);
+    })
+);
+
+app.use(
   '/graphql',
   graphqlHTTP({
     schema,
@@ -39,5 +49,5 @@ app.get('/schema', (_, res) => {
 
 app.listen(4000, () => {
   console.log('started on port 4000');
-  console.log(`Try querying for user ${toGlobalId('User', 1)}`);
+  console.log(`Try querying for user ${toGlobalId('User', 7)}`);
 });

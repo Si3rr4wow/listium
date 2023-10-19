@@ -43,6 +43,15 @@ const { connectionType: commentConnection } = connectionDefinitions({
   connectionFields: () => ({
     totalCount: {
       type: GraphQLInt,
+      // These functions are pretty cool
+      // you get the request as a third arg
+      // so you could do all kinds of stuff.
+
+      // However this is not a good strat for getting the total
+      // number of comment connections as it only counts the
+      // comments returned by a query and they may be less than
+      // the total comments in a given set (if we ask for (first: 5)
+      // for example)
       resolve: ({ edges }) => edges.length,
     },
   }),
